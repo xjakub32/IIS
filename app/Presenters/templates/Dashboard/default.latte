@@ -1,0 +1,100 @@
+{layout ../@layout.latte}
+
+{block content}
+<h1 class="h3 mb-4 text-gray-800">{block title}Dashboard{/block}</h1>
+
+<!--Load the AJAX API-->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+	google.charts.load('current', {'packages':['corechart']}); // load corechart package
+	google.charts.setOnLoadCallback(drawChart); // draw chart after corechart is loaded
+
+	function drawChart() {
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', 'Produkty');
+		data.addColumn('number', 'Tikety');
+		data.addRows([
+			{foreach $topTicketedProducts as $ttp}
+				[{$ttp->nazev}, {$ttp->pocet}],
+			{/foreach}
+		]);
+
+		var options = {'title':'Nejproblémovější produkty',
+			'width':1.5*400,
+			'height':1.5*300};
+
+		var chart = new google.visualization.PieChart(document.getElementById('ttp_div'));
+		chart.draw(data, options);
+	}
+</script>
+
+<script type="text/javascript">
+  google.charts.load('current', {'packages':['timeline']});
+  google.charts.setOnLoadCallback(drawChart);
+  function drawChart() {
+	var container = document.getElementById('timeline');
+	var chart = new google.visualization.Timeline(container);
+	var dataTable = new google.visualization.DataTable();
+
+	dataTable.addColumn({ type: 'string', id: 'Employee' });
+	dataTable.addColumn({ type: 'string', id: 'Task' });
+	dataTable.addColumn({ type: 'date', id: 'Start' });
+	dataTable.addColumn({ type: 'date', id: 'End' });
+	dataTable.addRows([
+		{foreach $zamestnanci as $zamestnanec}
+			{foreach $zamestnanec->related('ukoly.id_uzivatel') as $ukol}
+				{if $ukol->ref('stavy_ukol', 'stav')->stav != "Splněn"}
+					{var $cas_konce = $ukol->cas_predpoklad}
+					{*
+					{if $ukol->cas_celkem > $ukol->cas_predpoklad}
+						{var $cas_konce = $ukol->cas_celkem}
+					{else}
+						{var $cas_konce = $ukol->cas_predpoklad}
+					{/if}
+					*}
+						[
+							{$zamestnanec->jmeno}+" "+{$zamestnanec->prijmeni},
+							{$ukol->zadani|truncate:30},
+							new Date({$ukol->timestamp_vzniku}),
+							new Date(new Date({$ukol->timestamp_vzniku}).getTime() + {$cas_konce}*60*60*1000)
+						],
+				{/if}
+			{/foreach}
+		{/foreach}
+	]);
+
+	var options = { hAxis: { format: 'dd.MM.yyyy HH:MM' } };
+	chart.draw(dataTable, options);
+  }
+</script>
+
+<div class="card shadow mb-4">
+	<div class="card-header py-3">
+		<h6 class="m-0 font-weight-bold text-primary">Vytížení pracovníků</h6>
+	</div>
+	<div class="card-body overflow-auto">
+
+		<p>Zobrazeny jsou všechny nedokončené úkoly jednotlivých pracovníků. Počátek obdélníku značí 	čas, kdy byl úkol vytvořen. Konec obdélníku značí předpokládané dokončení daného úkolu.</p>
+		<div id="timeline" style="height: 400px;" class="text-center"></div>
+		
+	</div>
+</div>		
+
+<div class="card shadow mb-4">
+	<div class="card-header py-3">
+		<h6 class="m-0 font-weight-bold text-primary">Problémové produkty</h6>
+	</div>
+	<div class="card-body overflow-auto">
+
+		<p>Zobrazen je počet tiketů, které se vztahují k jednotlivým produktům. Zobrazeno je jen 5 nejproblémovějších produktů.</p>
+		<div class="row d-flex justify-content-lg-center">
+			<div class="text-center" style="text-align: center">
+				<div id="ttp_div"></div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+
+{block /content}

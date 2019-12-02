@@ -1,0 +1,252 @@
+{layout ../@layout.latte}
+{import 'modals.latte'}
+
+{block content}
+<h1 class="h3 mb-4 text-gray-800">{block title}Správa uživatelů{/block}</h1>
+
+<!-- Radek s uziv. akcemi (tlacitka) -->
+<div class="row">
+
+  {*<div class="col-lg-4">
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Přidání uživatele</h6>
+      </div>
+      <div class="card-body">
+        
+        <div class="row">
+          <div class="col-lg-12">
+            {control addUserForm}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>*}
+
+  {define karta_uzivatel}
+  <!-- karta uzivatel -->
+  <div class="col-sm-12 col-md-12 col-lg-4">
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+
+        <div class="col-12">
+          <div class="row">
+            <div class="col-12">
+              <div class="row">
+                <h6 class="m-0 font-weight-bold text-primary my-auto">Uživatel</h6>
+                {if isset($vybrany_uzivatel)}
+                  <a href="/administrace?id={$vybrany_uzivatel->id}">
+                  <span class="badge badge-secondary ml-2">{$vybrany_uzivatel->id}</span></a>
+                {/if}
+              </div>
+            </div>
+            
+          </div>
+        </div>
+
+      </div>
+      <div class="card-body">
+
+        {if isset($vybrany_uzivatel)}
+          <div class="row mb-2 d-flex justify-content-center">
+            <div class="col-sm-12 col-lg-2 text-center">
+              <img src="https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png" width="50px" alt="..." class="rounded mb-1 mx-auto d-block">
+              
+              {var $role = $vybrany_uzivatel->ref('role', 'role')}
+              <span class="badge badge-{$role->barva}">{$role->nazev}</span>
+
+            </div>
+          </div>
+
+
+          <div class="row mb-sm-2">
+
+            <div class="col-sm-12 col-lg-6 d-flex justify-content-lg-end">
+              <p class="font-weight-bold mb-0">Jméno:</p>
+            </div>
+            <div class="col-sm-12 col-lg-6 d-flex justify-content-lg-start pl-lg-0">
+              <p class="mb-0">{$vybrany_uzivatel->jmeno}</p>
+            </div>
+
+          </div>
+
+          <div class="row mb-sm-2">
+
+            <div class="col-sm-12 col-lg-6 d-flex justify-content-lg-end">
+              <p class="font-weight-bold mb-0">Příjmení:</p>
+            </div>
+            <div class="col-sm-12 col-lg-6 d-flex justify-content-lg-start pl-lg-0">
+              <p class="mb-0">{$vybrany_uzivatel->prijmeni}</p>
+            </div>
+
+          </div>
+
+          <div class="row mb-sm-2">
+
+            <div class="col-sm-12 col-lg-6 d-flex justify-content-lg-end">
+              <p class="font-weight-bold mb-0">Email:</p>
+            </div>
+            <div class="col-sm-12 col-lg-6 d-flex justify-content-lg-start pl-lg-0">
+              <p class="mb-0">{$vybrany_uzivatel->email}</p>
+            </div>
+
+          </div>
+
+          <div class="row mb-sm-2">
+
+            <div class="col-sm-12 col-lg-6 d-flex justify-content-lg-end">
+              <p class="font-weight-bold mb-0">Datum registrace:</p>
+            </div>
+            <div class="col-sm-12 col-lg-6 d-flex justify-content-lg-start pl-lg-0">
+              <p class="mb-0">{$vybrany_uzivatel->timestamp |date:'%d.%m.%Y %H:%M'}</p>
+            </div>
+
+          </div>
+
+          <hr>
+
+          <div class="row d-flex justify-content-center mt-2">
+
+            <div class="col-lg-6">
+              <a href="#" class="btn btn-warning btn-block mx-2 mb-md-0 mb-2" data-toggle="modal" data-target="#modalZmenitCiziUzivatelskeUdaje">
+                <span class="icon text-white-50 mr-2">
+                  <i class="fas fa-edit"></i>
+                </span>
+                <span class="text">Upravit údaje</span>
+              </a>
+            </div>
+
+          </div>
+
+          <hr>
+
+          <div class="row">
+
+              <div class="col-lg-6">
+                <a href="#" class="btn btn-primary btn-block mx-2 mb-md-0 mb-2" data-toggle="modal" data-target="#modalZmenaRole">
+                  <span class="icon text-white-50 mr-2">
+                    <i class="fas fa-user-tag"></i>
+                  </span>
+                  <span class="text">Změnit roli</span>
+                </a>
+              </div>
+
+              <div class="col-lg-6">
+              <a href="#" class="btn btn-danger btn-block mx-2 mb-md-0 mb-2" data-toggle="modal" data-target="#modalSmazatJinehoUzivatele">
+                <span class="icon text-white-50 mr-2">
+                  <i class="fas fa-trash"></i>
+                </span>
+                <span class="text">Smazat uživatele</span>
+              </a>
+            </div>
+
+          </div>
+
+          
+
+
+        {else}
+          <h3>Prosím vyberte uživatele</h3>
+        {/if}
+
+      </div>
+    </div>
+  </div>
+  {/define}
+
+
+
+  <div class="col-sm-12 col-md-12 col-lg-8">
+
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Uživatelé</h6>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+            <thead class="thead-light">
+              <tr>
+                <td>ID</td>
+                <td>Jméno</td>
+                <td>Příjmení</td>
+                <td>Email</td>
+                <td>Role</td>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <td>ID</td>
+                <td>Jméno</td>
+                <td>Příjmení</td>
+                <td>Email</td>
+                <td>Role</td>
+              </tr>
+            </tfoot>
+            <tbody>
+              {foreach $uzivatele as $uzivatel}
+              <tr class='clickable-row {$uzivatel->id == $id_selected ? "selected" : ""}' data-href='/administrace?id={$uzivatel->id}' style='cursor: pointer' n:if="$iterator->getCounter() != 1">
+                <td>{$uzivatel->id}</td>
+                <td>{$uzivatel->jmeno}</td>
+                <td>{$uzivatel->prijmeni}</td>
+                <td>{$uzivatel->email}</td>
+              {var $role = $uzivatel->ref('role', 'role')}
+                <td class="text-center"><span class="badge badge-{$role->barva}">{$role->nazev}</span></td>
+              </tr>
+              {/foreach}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {include karta_uzivatel}
+
+</div>
+
+{include modalZmenaRole}
+{include modalZmenitCiziUzivatelskeUdaje}
+{include modalSmazatJinehoUzivatele}
+
+{block /content}
+
+{block scripts}
+	<!-- Page level plugins -->
+	<script src="{$basePath}/vendor/datatables/jquery.dataTables.min.js"></script>
+	<script src="{$basePath}/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+	<!-- Page level custom scripts -->
+	<script src="{$basePath}/js/demo/datatables-demo.js"></script>
+
+	<script>
+		$('#dataTable').dataTable( {
+			language: {
+				url: '//cdn.datatables.net/plug-ins/1.10.20/i18n/Czech.json'
+			},
+			'pageLength': 25,
+		} );
+  </script>
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+
+  <!-- zobrazeni detailu tiketu -->
+  <script>
+    jQuery(document).ready(function($) {
+      $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
+      });
+  });
+  </script>
+
+{block /scripts}
+
+{block css}
+	<!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+
+  <!-- Custom styles for this page -->
+  <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/select/1.3.1/css/select.bootstrap4.min.css" rel="stylesheet">
+{block /css}

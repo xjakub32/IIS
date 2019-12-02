@@ -1,0 +1,329 @@
+{layout ../@layout.latte}
+{import 'modals.latte'}
+
+{block content}
+<h1 class="h3 mb-4 text-gray-800">{block title}Úkoly{/block}</h1>
+
+{*
+<!-- Radek s uziv. akcemi (tlacitka) -->
+<div class="row">
+
+  <div class="col-lg-12">
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Uživatelské akce</h6>
+      </div>
+      <div class="card-body">
+        
+        <div class="row">
+          <div class="my-2"></div>
+          <div class="col-sm-6 col-md-3">
+            <a href="#" class="btn btn-success btn-block mx-2 mb-md-0 mb-2" data-toggle="modal" data-target="#modalNovyUkol">
+              <span class="icon text-white-50 mr-2">
+                <i class="fas fa-plus"></i>
+              </span>
+              <span class="text">Vytvořit úkol</span>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+*}
+
+<div class="row">
+  <div class="col-sm-12 col-md-12 col-lg-8">
+
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Výpis úkolů</h6>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+            <thead class="thead-light">
+              <tr>
+                <td>ID</td>
+                <td>Produkt</td>
+                <td>Pracovník</td>
+                <td>Zadavatel</td>
+                {*<td>Zadání</td>*}
+                <td>Odhadovaný čas</td>
+                <td>Celkový čas</td>
+                <td>Čas vytvoření</td>
+                <td>Stav</td>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <td>ID</td>
+                <td>Produkt</td>
+                <td>Pracovník</td>
+                <td>Zadavatel</td>
+                {*<td>Zadání</td>*}
+                <td>Odhadovaný čas</td>
+                <td>Celkový čas</td>
+                <td>Čas vytvoření</td>
+                <td>Stav</td>
+              </tr>
+            </tfoot>
+            <tbody>
+              {foreach $ukoly as $ukol}
+              <tr class='clickable-row {$ukol->id == $id_selected ? "selected" : ""}' data-href='/administrace/ukoly?id={$ukol->id}' style='cursor: pointer'>
+                <td>{$ukol->id}</td>
+                {var $produkt = $ukol->ref('ticket', 'id_tiket')->produkt}
+                <td>{$produkt->nazev}</td>
+                {var $jmeno_pracovnika = $ukol->ref('uzivatele', 'id_uzivatel')->jmeno .' '. $ukol->ref('uzivatele', 'id_uzivatel')->prijmeni}
+                <td>{$jmeno_pracovnika |truncate:20}</td>
+                {var $jmeno_zadavatele = $ukol->ref('uzivatele', 'id_upravujiciho')->jmeno .' '. $ukol->ref('uzivatele', 'id_upravujiciho')->prijmeni}
+                <td>{$jmeno_zadavatele |truncate:20}</td>
+                {*<td>{$ukol->zadani |truncate:35}</td>*}
+                <td>{$ukol->cas_predpoklad}</td>
+                <td>{$ukol->cas_celkem}</td>
+                <td>{$ukol->timestamp |date:'%d.%m.%Y %H:%M'}</td>
+                {var $stav = $ukol->ref('stavy_ukol', 'stav')->stav}
+			      		{var $barva_badge = $ukol->ref('stavy_ukol', 'stav')->barva}
+						    <td class="text-center"><span class="badge badge-{$barva_badge}">{$stav}</span></td>
+              </tr>
+              {/foreach}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- karta ukolu  -->
+  <div class="col-sm-12 col-md-12 col-lg-4">
+
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+
+        <div class="col-12">
+          <div class="row">
+            <div class="pl-0 col-10">
+              <h6 class="m-0 font-weight-bold text-primary my-auto">Detail úkolu
+                {if isset($vybrany_ukol)}
+                  <span class="badge badge-secondary ml-2">{$vybrany_ukol->id}</span>
+                {/if}
+              </h6>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="card-body">
+
+        {if isset($vybrany_ukol)}
+
+          <div class="row mb-sm-2">
+
+            <div class="col-sm-12 col-lg-12 d-flex justify-content-lg-start">
+              <p class="font-weight-bold mb-0">Zadání:</p>
+            </div>
+            <div class="col-sm-12 col-lg-12 d-flex justify-content-lg-start">
+              <p class="mb-0">{$vybrany_ukol->zadani}</p>
+            </div>
+
+          </div>
+
+          <hr>
+
+            <div class="row mb-sm-2">
+
+              <div class="col-sm-12 col-lg-12 d-flex justify-content-lg-start">
+                <p class="font-weight-bold mb-0">Řešení:</p>
+              </div>
+            
+              <div class="col-sm-12 col-lg-12 d-flex justify-content-lg-start">
+                <p class="mb-0 font-italic font-weight-light" n:if="!$vybrany_ukol->popis_reseni">Naši Otroci ještě neposkytli řešení :(</p>
+                <p class="mb-0" n:if="$vybrany_ukol->popis_reseni">{$vybrany_ukol->popis_reseni}</p>
+              </div>
+
+            </div>
+
+          <hr>
+
+          <div class="row mb-sm-2">
+
+            <div class="col-sm-12 col-lg-6 d-flex justify-content-lg-end">
+              <p class="font-weight-bold mb-0">Pracovník:</p>
+            </div>
+            <div class="col-sm-12 col-lg-6 d-flex justify-content-lg-start pl-lg-0">
+              <p class="mb-0">{$vybrany_ukol->ref('uzivatele', 'id_uzivatel')->jmeno |truncate:20}</p>
+              <p class="ml-1 mb-0">{$vybrany_ukol->ref('uzivatele', 'id_uzivatel')->prijmeni |truncate:20}</p>
+            </div>
+
+          </div>
+
+          <div class="row mb-sm-2">
+
+            <div class="col-sm-12 col-lg-6 d-flex justify-content-lg-end">
+              <p class="font-weight-bold mb-0">Zadavatel:</p>
+            </div>
+            <div class="col-sm-12 col-lg-6 d-flex justify-content-lg-start pl-lg-0">
+              <p class="mb-0">{$vybrany_ukol->ref('uzivatele', 'id_upravujiciho')->jmeno |truncate:20}</p>
+              <p class="ml-1 mb-0">{$vybrany_ukol->ref('uzivatele', 'id_upravujiciho')->prijmeni |truncate:20}</p>
+            </div>
+
+          </div>
+
+          <div class="row mb-sm-2">
+
+            <div class="col-sm-12 col-lg-6 d-flex justify-content-lg-end">
+              <p class="font-weight-bold mb-0">Datum vytvoření:</p>
+            </div>
+            <div class="col-sm-12 col-lg-6 d-flex justify-content-lg-start pl-lg-0">
+              <p class="mb-0">{$vybrany_ukol->timestamp_vzniku |date:'%d.%m.%Y %H:%M'}</p>
+            </div>
+
+          </div>
+
+          <div class="row mb-sm-2">
+
+            <div class="col-sm-12 col-lg-6 d-flex justify-content-lg-end">
+              <p class="font-weight-bold mb-0">Odhad potřebného času:</p>
+            </div>
+            <div class="col-sm-12 col-lg-6 d-flex justify-content-lg-start pl-lg-0">
+              <p class="mb-0">{$vybrany_ukol->cas_predpoklad} hod</p>
+            </div>
+
+          </div>
+
+          <div class="row mb-sm-2">
+
+            <div class="col-sm-12 col-lg-6 d-flex justify-content-lg-end">
+              <p class="font-weight-bold mb-0">Celkový čas:</p>
+            </div>
+            <div class="col-sm-12 col-lg-6 d-flex justify-content-lg-start pl-lg-0">
+              <p class="mb-0">{$vybrany_ukol->cas_celkem} hod</p>
+            </div>
+
+          </div>
+
+          <div class="row mb-sm-2">
+
+            <div class="col-sm-12 col-lg-6 d-flex justify-content-lg-end">
+              <p class="font-weight-bold mb-0">Vztahuje se k:</p>
+            </div>
+            <div class="col-sm-12 col-lg-6 d-flex justify-content-lg-start pl-lg-0">
+              <a href="/tikety/detail?id={$vybrany_ukol->id_tiket}">
+                <p class="font-weight-bold mb-0 text-primary">{$produkt = $vybrany_ukol->ref('ticket', 'id_tiket')->nazev |truncate:30} ({$vybrany_ukol->id_tiket})</p>
+              </a>
+            </div>
+
+          </div>
+
+          <hr>
+
+          <div class="row d-flex justify-content-center">
+            <div class="my-2"></div>
+            <div class="col-sm-12 col-lg-6">
+              <a href="#" class="btn btn-success btn-block mx-2 mb-md-0 mb-2" data-toggle="modal" data-target="#modalReseniUkol">
+                <span class="icon text-white-50 mr-2">
+                  <i class="fas fa-edit"></i>
+                </span>
+                <span class="text">Aktualizovat</span>
+              </a>
+            </div>
+            <div class="col-sm-12 col-lg-6" n:if="$user->isInRole('Vedoucí') || $user->isInRole('Admin') || $user->isInRole('Manažer')">
+              <a href="#" class="btn btn-warning btn-block mx-2 mb-md-0 mb-2" data-toggle="modal" data-target="#modalStavUkol">
+                <span class="icon text-white-50 mr-2">
+                  <i class="fas fa-clipboard-list"></i>
+                </span>
+                <span class="text">Změnit stav</span>
+              </a>
+            </div>
+          </div>
+
+        {else}
+
+          <div class="row ml-1">
+            <h4>Prosím vyberte úkol ze seznamu</h4>
+          </div>
+
+        {/if}
+
+      </div>
+      <div class="card-footer text-muted">
+        <div class="row">
+          <div class="col-sm-12 col-lg-2 d-flex justify-content-start">
+            <h5 class="text-primary my-auto">
+
+              {if isset($vybrany_ukol)}
+
+                {var $barva_badge = $vybrany_ukol->ref('stavy_ukol', 'stav')->barva}
+                {var $nazev_stavu = $vybrany_ukol->ref('stavy_ukol', 'stav')->stav}
+                <span class="badge badge-{$barva_badge}">{$nazev_stavu}</span>
+              {/if}
+
+            </h5>
+
+          </div>
+          {if isset($vybrany_ukol)}
+            <div class="col-sm-12 col-lg-10 d-flex justify-content-lg-end">
+              <p class="font-weight-bold mb-0">Poslední změna:</p>
+              <p class="font-weight-bold ml-1 mb-0 text-primary">{$vybrany_ukol->timestamp |date:'%d.%m.%Y %H:%M'}</p>
+            </div>
+          {/if}
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{include modalReseniUkol}
+{include modalStavUkol}
+
+
+
+{block /content}
+
+{block scripts}
+	<!-- Page level plugins -->
+	<script src="{$basePath}/vendor/datatables/jquery.dataTables.min.js"></script>
+	<script src="{$basePath}/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+	<!-- Page level custom scripts -->
+	<script src="{$basePath}/js/demo/datatables-demo.js"></script>
+
+	<script>
+		$('#dataTable').dataTable( {
+			language: {
+				url: '//cdn.datatables.net/plug-ins/1.10.20/i18n/Czech.json'
+			},
+			'pageLength': 25,
+		} );
+    </script>
+
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+
+<!-- zobrazeni detailu ukolu -->
+<script>
+	jQuery(document).ready(function($) {
+		$(".clickable-row").click(function() {
+			window.location = $(this).data("href");
+		});
+});
+</script>
+
+{block /scripts}
+
+{block css}
+	<!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+
+  <!-- Custom styles for this page -->
+  <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+  
+  <link href="https://cdn.datatables.net/select/1.3.1/css/select.bootstrap4.min.css" rel="stylesheet">
+{block /css}

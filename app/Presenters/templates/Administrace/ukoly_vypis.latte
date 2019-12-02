@@ -1,0 +1,65 @@
+{block ukolyVypis}
+
+<div class="row">
+  <div class="col-sm-12 col-md-12 col-lg-12">
+
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Výpis úkolů</h6>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover" id="tableUkoly" width="100%" cellspacing="0">
+            <thead class="thead-light">
+              <tr>
+                <td>ID</td>
+                <td>Produkt</td>
+                <td>Pracovník</td>
+                <td>Zadavatel</td>
+                {*<td>Zadání</td>*}
+                <td>Odhadovaný čas</td>
+                <td>Celkový čas</td>
+                <td>Čas vytvoření</td>
+                <td>Stav</td>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <td>ID</td>
+                <td>Produkt</td>
+                <td>Pracovník</td>
+                <td>Zadavatel</td>
+                {*<td>Zadání</td>*}
+                <td>Odhadovaný čas</td>
+                <td>Celkový čas</td>
+                <td>Čas vytvoření</td>
+                <td>Stav</td>
+              </tr>
+            <tbody>
+              {foreach $ukoly as $ukol}
+              <tr class='clickable-row' data-href='/administrace/ukoly?id={$ukol->id}' style='cursor: pointer'>
+                <td>{$ukol->id}</td>
+                {var $produkt = $ukol->ref('ticket', 'id_tiket')->produkt}
+                <td>{$produkt->nazev}</td>
+                {var $jmeno_pracovnika = $ukol->ref('uzivatele', 'id_uzivatel')->jmeno .' '. $ukol->ref('uzivatele', 'id_uzivatel')->prijmeni}
+                <td>{$jmeno_pracovnika |truncate:30}</td>
+                {var $jmeno_zadavatele = $ukol->ref('uzivatele', 'id_upravujiciho')->jmeno .' '. $ukol->ref('uzivatele', 'id_upravujiciho')->prijmeni}
+                <td>{$jmeno_zadavatele |truncate:30}</td>
+                {*<td>{$ukol->zadani |truncate:35}</td>*}
+                <td>{$ukol->cas_predpoklad}</td>
+                <td>{$ukol->cas_celkem}</td>
+                <td>{$ukol->timestamp |date:'%d.%m.%Y %H:%M'}</td>
+                {var $stav = $ukol->ref('stavy_ukol', 'stav')->stav}
+			      		{var $barva_badge = $ukol->ref('stavy_ukol', 'stav')->barva}
+						    <td class="text-center"><span class="badge badge-{$barva_badge}">{$stav}</span></td>
+              </tr>
+              {/foreach}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{block /ukolyVypis}

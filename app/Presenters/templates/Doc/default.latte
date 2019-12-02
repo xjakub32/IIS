@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Projekt IIS</title>
+    <style type="text/css">
+    	table { border-collapse: collapse; }
+    	td, th { border: 1px solid black; padding: 0.3em 0.5em; text-align: left; }
+    	dt { font-weight: bold; margin-top: 0.5em; }
+    </style>
+</head>
+<body>
+
+<h1>Issue Tracking System</h1> <!-- Nahradte názvem svého zadání -->
+
+<dl>
+	<dt>Autoři</dt>
+	<dd>Jakub Jakuba
+	    <a href="mailto:xjakub32@stud.fit.vutbr.cz">xjakub32@stud.fit.vutbr.cz</a> -
+		zprovoznění Nette frameworku a MySQL databáze, práce na frontendu i backendu, komunikace s databází
+	</dd>
+	<dd>Petr Kovář
+	    <a href="mailto:xkovar82@stud.fit.vutbr.cz">xkovar82@stud.fit.vutbr.cz</a> - 
+		hlavní tvůrce frontendu, formuláře, tabulky, filtrování, práce i na backendu
+	</dd>
+  <dd>Tibor Mikeš
+	    <a href="mailto:xmikes12@stud.fit.vutbr.cz">xmikes12@stud.fit.vutbr.cz</a> - 
+		tvorba databáze, dashboardu, doplňující práce na frontendu i backendu, dokumentace
+	</dd>
+	<dt>URL aplikace</dt>
+	<dd><a href="http://its.calmare.cz/">http://its.calmare.cz/</a></dd>
+</dl>
+
+<h2>Uživatelé systému pro testování</h2>
+<table>
+<tbody><tr><th>Login</th><th>Heslo</th><th>Role</th></tr>
+<tr><td>admin@a.cz</td><td>12345678</td><td>Administrátor</td></tr>
+<tr><td>vedouci@a.cz</td><td>12345678</td><td>Vedoucí</td></tr>
+<tr><td>manazer@a.cz</td><td>12345678</td><td>Manažer</td></tr>
+<tr><td>pracovnik@a.cz</td><td>12345678</td><td>Pracovník</td></tr>
+<tr><td>zakaznik@a.cz</td><td>12345678</td><td>Zákazník</td></tr>
+</tbody></table>
+
+<h2>Implementace</h2>
+<h3>Přehled</h3>
+<p>Pro vývoj informačního systému jsme využili jazyk PHP a framerwork Nette. Pro implementaci databáze jsme
+použili SŘBD MySQL, jehož správu jsme prováděli přes systém phpMyAdmin. Šablonové soubory
+pro jednotlivé stránky/prvky na stránkách jsou psány v jazyce Latte.</p>
+<p>Kód projektu je organizován primárně do:</p>
+<ul>
+<li>Presenterů (v MVC odpovídají Controlleru)</li>
+<li>Managerů (v MVC odpovídají Modelu)</li>
+<li>šablonových souborů .latte (v MVC odpovídají View)</li>
+</ul>
+<p>Presentery předávají šablonovým souborům hodnoty proměnných, které pak šablonovací
+systém využívá pro sestavení finální podoby stránky. Tyto hodnoty jsou získávány z Managerů
+(příkladem je TicketManager), které komunikují s databází. Managery jsou použity jak pro dotazování
+se nad daty, tak pro přidávání a úpravu databázových dat.</p>
+<h3>Soubory implementující jednotlivé případy použití</h3>
+<ul>
+<li>app/Presenters/SignPresenter.php - přihlašování a registrace</li>
+<li>app/Presenters/TiketyPresenter.php - veškerá práce s tikety, tvorba úkolů a komentářů</li>
+<li>app/Presenters/AdministracePresenter.php - práce s uživateli, produkty a úkoly</li>
+<li>app/Presenters/DashboardPresenter.php - dashboard (Javascriptový kód je v šablonovém souboru app/Presenters/templates/Dashboard/default.latte)</li>
+<li>app/Presenters/ErrorPresenter.php - zpracování chyb</li>
+<li>app/Presenters/Error4xxPresenter.php - zpracování chyb se stavovým kódem 4xx</li>
+<li>app/Presenters/templates/*/*.latte - šablonové soubory</li>
+<li>app/Model/*Manager.php - komunikace s databází</li>
+</ul>
+
+<h3>Databáze</h3>
+<img src="er.png">
+
+<h2>Instalace</h2>
+<ol>
+<li>git clone https://github.com/xjakub32/IIS </li>
+<li>upload (přes FTP) na webserver (například webhosting WEDOS) </li>
+</ol>
+
+<h3>Požadavky na technologie</h3>
+<ul>
+<li>Verze PHP: 7.3</li>
+<li>Databázový server: 10.1.37-MariaDB</li>
+<li>Webovýserver: Apache</li>
+</ul>
+
+<p>
+K použití databáze je potřeba zprovoznit systém phpMyAdmin a pak pomocí něj
+naimportovat přiložený soubor vyexportované databáze. V souboru /app/config/local.neon je potřeba přepsat cestu a přihlašovací údaje
+k vytvořené databázi.
+</p>
+
+<h2>Známé problémy</h2>
+<p>K tiketům není možné přikládat obrázky z důvodu nedostatku času a znalostí frameworku Nette.</p>
+
+</body></html>

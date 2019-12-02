@@ -1,0 +1,143 @@
+{layout ../@layout.latte}
+{import 'tikety_controls.latte'}
+{import 'tikety_filters.latte'}
+{import 'modal.latte'}
+
+{block content}
+<h1 class="h3 mb-4 text-gray-800">{block title}Tikety{/block}</h1>
+<!--<p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p>-->
+
+{if $user->loggedIn}
+	{include tikety_controls}
+{else}
+	<h3 class="h3 mb-4 text-gray-600">Pro přidání tiketu je potřeba se přihlásit nebo registrovat</h3>
+{/if}
+
+{include tikety_filters}
+
+{var $badge_stavy=array(
+	'vytvořen'	=> 'badge-primary',
+	'vyřešen'	=> 'badge-success',
+)}
+<!-- Tabulka tiketů -->
+<div class="card shadow mb-4">
+	<div class="card-header py-3">
+		<h6 class="m-0 font-weight-bold text-primary">Výpis tiketů</h6>
+	</div>
+	<div class="card-body">
+		<div class="table-responsive">
+			<table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+				<thead class="thead-light">
+					<tr>
+						<td n:if="$user->isInRole('Admin') || $user->isInRole('Vedoucí') || $user->isInRole('Manažer') || $user->isInRole('Pracovník')">Číslo</td>
+						<td>Produkt</td>
+						<td>Uživatel</td>
+						<td>Název</td>
+						<td>Datum</td>
+						<td>Stav</td>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<td n:if="$user->isInRole('Admin') || $user->isInRole('Vedoucí') || $user->isInRole('Manažer') || $user->isInRole('Pracovník')">Číslo</td>
+						<td>Produkt</td>
+						<td>Uživatel</td>
+						<td>Název</td>
+						<td>Datum</td>
+						<td>Stav</td>
+					</tr>
+				</tfoot>
+				<tbody>
+				{foreach $tikety as $tiket}
+					<tr class='clickable-row' data-href='/tikety/detail?id={$tiket->id}' style='cursor: pointer'>
+						<td n:if="$user->isInRole('Admin') || $user->isInRole('Vedoucí') || $user->isInRole('Manažer') || $user->isInRole('Pracovník')">{$tiket->id}</td>
+						<td>{$tiket->ref('produkty', 'id_produkt')->nazev |truncate:15}</td>
+					{var $uzivatel = $tiket->ref('uzivatele', 'id_uzivatel')->jmeno .' '. $tiket->ref('uzivatele', 'id_uzivatel')->prijmeni}
+						<td>{$uzivatel |truncate:15}</td>
+						<td>{$tiket->nazev |truncate:140}</td>
+						<td class="text-center">{$tiket->timestamp |date:'%d.%m.%Y %H:%M'}</td>
+					{var $stav = $tiket->ref('stavy_ticket', 'stav')->stav}
+					{var $barva_badge = $tiket->ref('stavy_ticket', 'stav')->barva}
+						<td class="text-center"><span class="badge badge-{$barva_badge}">{$stav}</span></td>
+						{*<td class="text-center"><span class="badge {array_key_exists($stav, $badge_stavy) != NULL? $badge_stavy[$stav] : ''}">{$stav}</span></td>*}
+					</tr>
+				{/foreach}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>		
+
+
+<!--<select class="selectpicker" data-live-search-style="startsWith" data-live-search="true" data-size="5">
+    <option>Alabama</option>
+    <option>Alaska </option>
+    <option>Arizona </option>
+    <option>Arkansas </option>
+    <option>California </option>
+    <option>Colorado </option>
+    <option>Connecticut </option>
+    <option>Delaware </option>
+    <option>Florida </option>
+    <option>Georgia </option>
+    <option>Hawaii </option>
+    <option>Idaho </option>
+</select>-->
+
+<!--Přídání uživatele
+<div class="col-lg-6">
+{control addUserForm}
+</div>-->
+
+
+{include modalPridatTiket}
+{include modalAplikovatFiltr}
+
+{block /content}
+
+{block scripts}
+	<!-- Page level plugins -->
+	<script src="{$basePath}/vendor/datatables/jquery.dataTables.min.js"></script>
+	<script src="{$basePath}/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+	<!-- Page level custom scripts -->
+	<script src="{$basePath}/js/demo/datatables-demo.js"></script>
+
+	<script>
+		$('#dataTable').DataTable( {
+			language: {
+				url: '//cdn.datatables.net/plug-ins/1.10.20/i18n/Czech.json'
+			},
+			'pageLength': 25,
+		} );
+
+		function zobrazMojeTikety() {
+			{if $user->getIdentity()}
+				$('#dataTable').DataTable().search({$user->getIdentity()->jmeno}+" "+{$user->getIdentity()->prijmeni}).draw();
+			{/if}
+		}
+	</script>
+
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+
+<!-- zobrazeni detailu tiketu -->
+<script>
+	jQuery(document).ready(function($) {
+		$(".clickable-row").click(function() {
+			window.location = $(this).data("href");
+		});
+});
+</script>
+
+{block /scripts}
+
+{block css}
+	<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+
+  <!-- Custom styles for this page -->
+  <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+{block /css}

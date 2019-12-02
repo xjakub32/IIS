@@ -1,0 +1,179 @@
+{define komentare}
+
+<!-- Okno Komentare -->
+<div class="row">
+
+  <div class="col-lg-12">
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Komentáře</h6>
+      </div>
+      <div class="card-body">
+
+
+        {if $komentare->count() != 0}
+
+          {foreach $komentare as $komentar}
+            
+            <!-- Jeden komentar
+              Zobrazeni roli
+              nastaveni 2 class (badge-, border-)
+              Administrator - badge-primary, border-primary
+              Vedouci -       badge-success, border-success
+              Manazer -       badge-danger, border-danger
+              Pracovnik -     badge-warning, border-warning
+              Zakaznik -      badge-info, border-info
+            -->
+
+            {var $barva_uzivatele = $role_info[$komentar->ref('uzivatele', 'id_uzivatel')->role]->barva}
+            <div class="row mb-4 justify-content-center">
+              <div class="col-sm-12 col-lg-1 text-center">
+                <img src="https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png" width="50px" alt="..." class="rounded mb-1 mx-auto d-block">
+                <span class="badge badge-{$barva_uzivatele}">{$role_info[$komentar->ref('uzivatele', 'id_uzivatel')->role]->nazev}</span>
+              </div>
+              <div class="col-sm-12 col-lg-9">
+                <div>
+                  <span class="font-weight-bold">{$komentar->ref('uzivatele', 'id_uzivatel')->jmeno} {$komentar->ref('uzivatele', 'id_uzivatel')->prijmeni}</span>
+                  <span class="float-right font-italic">{$komentar->timestamp |date:'%d.%m.%Y %k:%M:%S'}</span>
+                </div>
+                <div>
+                  <p class="p-1 border border-{$barva_uzivatele} rounded">{$komentar->text|breaklines}</p>
+                </div>
+              </div>
+            </div>
+            <!-- Konec komentare -->
+
+          {/foreach}
+         
+        {else}
+
+          <div class="row my-4">
+
+            <div class="col-12 d-flex justify-content-center">
+              <h4>Nebyly napsány žádné komentáře</h4>
+            </div>
+
+          </div>
+
+
+        {/if}
+
+
+        <!-- 
+        <div class="row mb-4">
+          <div class="col-lg-1"></div>
+          <div class="col-sm-12 col-lg-1 text-center">
+            <img src="https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png" width="50px" alt="..." class="rounded mb-1 mx-auto d-block">
+            <span class="badge badge-light">Zákazník</span>
+          </div>
+          <div class="col-sm-12 col-lg-9">
+            <div>
+              <span class="font-weight-bold">Jméno příjmení</span>
+              <span class="float-right font-italic">1.1.2020 10:25:43</span>
+            </div>
+            <div>
+              <p class="p-1 border rounded">Pánové nějak dlouho vám to trvá vyřešit můj problém...</p>
+            </div>
+          </div>
+          <div class="col-lg-1"></div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-lg-1"></div>
+          <div class="col-sm-12 col-lg-1 text-center">
+            <img src="https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png" width="50px" alt="..." class="rounded mb-1 mx-auto d-block">
+            <span class="badge badge-success">Vedoucí</span>
+          </div>
+          <div class="col-sm-12 col-lg-9">
+            <div>
+              <span class="font-weight-bold">Jméno příjmení</span>
+              <span class="float-right font-italic">1.1.2020 10:25:43</span>
+            </div>
+            <div>
+              <p class="p-1 border border-success rounded">Vše napravíme, zaměstnanci se neumí chovat.</p>
+            </div>
+          </div>
+          <div class="col-lg-1"></div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-lg-1"></div>
+          <div class="col-sm-12 col-lg-1 text-center">
+            <img src="https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png" width="50px" alt="..." class="rounded mb-1 mx-auto d-block">
+            <span class="badge badge-danger rounded">Manažer</span>
+          </div>
+          <div class="col-sm-12 col-lg-9">
+            <div>
+              <span class="font-weight-bold">Jméno příjmení</span>
+              <span class="float-right font-italic">1.1.2020 10:25:43</span>
+            </div>
+            <div>
+              <p class="p-1 border border-danger rounded">To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! To si vyprošuju! </p>
+            </div>
+          </div>
+          <div class="col-lg-1"></div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-lg-1"></div>
+          <div class="col-sm-12 col-lg-1 text-center">
+            <img src="https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png" width="50px" alt="..." class="rounded mb-1 mx-auto d-block">
+            <span class="badge badge-warning">Pracovník</span>
+          </div>
+          <div class="col-sm-12 col-lg-9">
+            <div>
+              <span class="font-weight-bold">Jméno příjmení</span>
+              <span class="float-right font-italic">1.1.2020 10:25:43</span>
+            </div>
+            <div>
+              <p class="p-1 border border-warning rounded">Kdyby nám za to platili, tak to máte už dávno hotové...</p>
+            </div>
+          </div>
+          <div class="col-lg-1"></div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-lg-1"></div>
+          <div class="col-sm-12 col-lg-1 text-center">
+            <img src="https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png" width="50px" alt="..." class="rounded mb-1 mx-auto d-block">
+            <span class="badge badge-primary">Administrátor</span>
+          </div>
+          <div class="col-sm-12 col-lg-9">
+            <div>
+              <span class="font-weight-bold">Jméno příjmení</span>
+              <span class="float-right font-italic">1.1.2020 10:25:43</span>
+            </div>
+            <div>
+              <p class="p-1 border border-primary rounded">Všichni dostanete ban!</p>
+            </div>
+          </div>
+          <div class="col-lg-1"></div>
+        </div>
+
+        -->
+        
+        <!-- odesilaci pole -->
+        <div class="row">
+
+          <form class="col-12 d-flex justify-content-center" n:name="addKomentar">
+            <div class="col-sm-12 col-lg-7 offset-lg-1">
+              <textarea n:name="komentar" class="form-control form-control-sm py-1" placeholder="{!$user->isLoggedIn()? 'Pro přidání komentáře se musíte přihlásit' :'Text vašeho komentáře'}" rows="3" {!$user->isLoggedIn()? 'disabled'}></textarea>
+            </div>
+
+            <div class="col-sm-12 col-lg-2">
+              <button n:name="odeslat" type="submit" class="btn btn-primary btn-block mb-2 py-1 my-lg-0 my-2 p-4" {!$user->isLoggedIn()? 'disabled'}>Odeslat</button>
+            </div>
+          </form>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- Konec okna s komentari -->
+
+
+
+{/define komentare}

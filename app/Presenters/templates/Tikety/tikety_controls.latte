@@ -1,0 +1,99 @@
+{block tikety_controls}
+<!-- Radek s info kartama -->
+<div class="row">
+  <div class="col-lg-9 my-auto">
+    <div class="row justify-content-md-center" n:if="$user->isInRole('Pracovník') || $user->isInRole('Manažer') || $user->isInRole('Vedoucí') || $user->isInRole('Admin')">
+
+      <div class="col-xl-2 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">celkový počet</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">{$pocetCelkem}</div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-2 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Vyřízeno</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">{$pocetVyrizenych}</div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-check fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Zbývá nevyřízených</div>
+                <div class="row no-gutters align-items-center">
+                  <div class="col-auto">
+                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{$pocetZbyvajicichProcent|number}%</div>
+                  </div>
+                  <div class="col">
+                    <div class="progress progress-sm mr-2">
+                      <div class="progress-bar bg-info" role="progressbar" style="width: {$pocetZbyvajicichProcent|number}%" aria-valuenow="{$pocetZbyvajicichProcent|number}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    </div>
+    
+  </div>
+  <div class="col-lg-3">
+    <!-- Radek s uziv. akcemi (tlacitka) -->
+    <div class="row" n:if="$user->isInRole('Zákazník') || $user->isInRole('Pracovník') || $user->isInRole('Manažer') || $user->isInRole('Vedoucí') || $user->isInRole('Admin')">
+
+      <div class="col">
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Uživatelské akce</h6>
+          </div>
+          <div class="card-body">
+            
+            <div class="row my-2 d-flex justify-content-center">
+
+              <div class="col-lg-8">
+                <a href="#" class="btn btn-success btn-block mx-2 mb-md-0 mb-2" data-toggle="modal" data-target="#modalPridatTiket">
+                  <span class="icon text-white-50 mr-2">
+                    <i class="fas fa-plus"></i>
+                  </span>
+                  <span class="text">Vytvořit tiket</span>
+                </a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    
+  </div>
+
+</div>
+{block /tikety_controls}

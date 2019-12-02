@@ -1,0 +1,239 @@
+{* sablona obsahujici vsechny modalni okna ze sekce administrace *}
+
+{* Ukoly *}
+
+{define modalNovyUkol}
+<!-- Modal -->
+<div class="modal fade" id="modalNovyUkol" tabindex="-1" role="dialog" aria-labelledby="modalNovyUkolTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalNovyUkolLongTitle">Vytvořit úkol</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {control addUkol}
+
+      </div>
+    </div>
+  </div>
+</div>
+{/define modalNovyUkol}
+
+{define modalReseniUkol}
+<!-- Modal -->
+<div class="modal fade" id="modalReseniUkol" tabindex="-1" role="dialog" aria-labelledby="modalReseniUkolTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalReseniUkolLongTitle">Aktualizovat řešení úkolu</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {control addReseni}
+
+      </div>
+    </div>
+  </div>
+</div>
+{/define modalReseniUkol}
+
+{define modalStavUkol}
+<!-- Modal -->
+<div class="modal fade" id="modalStavUkol" tabindex="-1" role="dialog" aria-labelledby="modalStavUkolTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalStavUkolLongTitle">Změnit stav úkolu</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {control ukolChangeState}
+      </div>
+    </div>
+  </div>
+</div>
+{/define modalStavUkol}
+
+
+{* Produkty *}
+
+{define modalNovyProdukt}
+<!-- Modal -->
+<div class="modal fade" id="modalNovyProdukt" tabindex="-1" role="dialog" aria-labelledby="modalNovyProduktTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalNovyProduktLongTitle">Vytvořit produkt</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {control addProdukt}
+      </div>
+    </div>
+  </div>
+</div>
+{/define modalNovyProdukt}
+
+{define modalUpravitProdukt}
+<!-- Modal -->
+<div class="modal fade" id="modalUpravitProdukt" tabindex="-1" role="dialog" aria-labelledby="modalUpravitProduktTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalUpravitProduktLongTitle">Upravit produkt</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {control changeProdukt}
+      </div>
+    </div>
+  </div>
+</div>
+{/define modalUpravitProdukt}
+
+{define modalSmazatProdukt}
+<!-- Modal -->
+<div class="modal fade" id="modalSmazatProdukt" tabindex="-1" role="dialog" aria-labelledby="modalSmazatProduktTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalSmazatProduktLongTitle">Smazat produkt</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {control deleteProdukt}
+      </div>
+    </div>
+  </div>
+</div>
+{/define modalSmazatProdukt}
+
+{define modalPriraditManazera}
+<!-- Modal -->
+<div class="modal fade" id="modalPriraditManazera" tabindex="-1" role="dialog" aria-labelledby="modalPriraditManazeraTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalPriraditManazeraLongTitle">Změnit manažera k produktu</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {control assignProductToManagerForm}
+      </div>
+    </div>
+  </div>
+</div>
+{/define modalPriraditManazera}
+
+
+{* Uzivatele *}
+
+{define modalZmenaRole}
+<!-- Modal -->
+<div class="modal fade" id="modalZmenaRole" tabindex="-1" role="dialog" aria-labelledby="modalZmenaRoleTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalZmenaRoleLongTitle">Změnit roli uživatele</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {control changeUserPrivilegesForm}
+      </div>
+    </div>
+  </div>
+</div>
+{/define modalZmenaRole}
+
+{define modalZmenitSveUzivatelskeUdaje}
+<!-- Modal -->
+<div class="modal fade" id="modalZmenitSveUzivatelskeUdaje" tabindex="-1" role="dialog" aria-labelledby="modalZmenitSveUzivatelskeUdajeTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalZmenitSveUzivatelskeUdajeLongTitle">Změnit své údaje</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {control changeThisUserDataForm}
+      </div>
+    </div>
+  </div>
+</div>
+{/define modalZmenitSveUzivatelskeUdaje}
+
+{define modalZmenitCiziUzivatelskeUdaje}
+<!-- Modal -->
+<div class="modal fade" id="modalZmenitCiziUzivatelskeUdaje" tabindex="-1" role="dialog" aria-labelledby="modalZmenitCiziUzivatelskeUdajeTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalZmenitCiziUzivatelskeUdajeLongTitle">Změnit údaje uživatele</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {control changeOtherUserDataForm}
+      </div>
+    </div>
+  </div>
+</div>
+{/define modalZmenitCiziUzivatelskeUdaje}
+
+{define modalSmazatUzivatele}
+<!-- Modal -->
+<div class="modal fade" id="modalSmazatUzivatele" tabindex="-1" role="dialog" aria-labelledby="modalSmazatUzivateleTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalSmazatUzivateleLongTitle">Smazat účet</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {control deleteThisUserForm}
+      </div>
+    </div>
+  </div>
+</div>
+{/define modalSmazatUzivatele}
+
+{define modalSmazatJinehoUzivatele}
+<!-- Modal -->
+<div class="modal fade" id="modalSmazatJinehoUzivatele" tabindex="-1" role="dialog" aria-labelledby="modalSmazatJinehoUzivateleTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalSmazatJinehoUzivateleLongTitle">Smazat účet</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {control deleteOtherUserForm}
+      </div>
+    </div>
+  </div>
+</div>
+{/define modalSmazatJinehoUzivatele}

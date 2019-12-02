@@ -1,0 +1,93 @@
+{define modalPridatTiket}
+<!-- Modal -->
+<div class="modal fade" id="modalPridatTiket" tabindex="-1" role="dialog" aria-labelledby="modalPridatTiketTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalPridatTiketLongTitle">Vytvořit nový tiket</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {control makeTiketForm}
+      </div>
+    </div>
+  </div>
+</div>
+{/define modalPridatTiket}
+
+
+{define modalAplikovatFiltr}
+<!-- Modal -->
+<div class="modal fade" id="modalAplikovatFiltr" tabindex="-1" role="dialog" aria-labelledby="modalAplikovatFiltrTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalAplikovatFiltrLongTitle">Aplikovat filtry</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {control makeTiketForm}
+      </div>
+    </div>
+  </div>
+</div>
+{/define modalAplikovatFiltr}
+
+{define modalSmazatTiket}
+<!-- Modal -->
+<div class="modal fade" id="modalSmazatTiket" tabindex="-1" role="dialog" aria-labelledby="modalSmazatTiketTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalSmazatTiketLongTitle">To jako fakt?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {control smazatTiketForm}
+    </div>
+  </div>
+</div>
+{/define modalSmazatTiket}
+
+{define modalZmenitStavTiketu}
+<!-- Modal -->
+<div class="modal fade" id="modalZmenitStavTiketu" tabindex="-1" role="dialog" aria-labelledby="modalZmenitStavTiketuTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalZmenitStavTiketuLongTitle">Změnit stav tiketu</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {control zmenitStavTiketuForm}
+      </div>
+    </div>
+  </div>
+</div>
+{/define modalZmenitStavTiketu}
+
+{define modalPridatUkol}
+<!-- Modal -->
+<div class="modal fade" id="modalPridatUkol" tabindex="-1" role="dialog" aria-labelledby="modalPridatUkolTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalPridatUkolLongTitle">Vytvořit úkol</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {control makeUkolForm}
+      </div>
+    </div>
+  </div>
+</div>
+{/define modalPridatUkol}
